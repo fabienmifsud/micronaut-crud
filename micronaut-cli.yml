@@ -1,0 +1,6 @@
+applicationType: default
+defaultPackage: com.fmi
+testFramework: junit
+sourceLanguage: java
+buildTool: maven
+features: [ app-name, data, data-jpa, flyway, graphql, http-client, java, java-application, jdbc-hikari, junit, logback, maven, netty-server, postgres, readme, security, security-annotations, shade, testcontainers, yaml ]
