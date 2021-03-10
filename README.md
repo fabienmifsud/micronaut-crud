@@ -1,35 +1,85 @@
-## Micronaut 2.3.4 Documentation
+# Spring Boot Crud with Postgres & DGS GraphQL
 
-- [User Guide](https://docs.micronaut.io/2.3.4/guide/index.html)
-- [API Reference](https://docs.micronaut.io/2.3.4/api/index.html)
-- [Configuration Reference](https://docs.micronaut.io/2.3.4/guide/configurationreference.html)
-- [Micronaut Guides](https://guides.micronaut.io/index.html)
+This project is aimed to quickly test the stack :
 
----
+- Micronaut (https://micronaut.io/)
+- Micronaut GraphQL with SPQR (https://micronaut-projects.github.io/micronaut-graphql/latest/guide/
+  and https://github.com/leangen/graphql-spqr)
+- Micronaut JPA Postgres (https://guides.micronaut.io/micronaut-data-access-jpa-hibernate/guide/index.html)
+- Database initialisation with Flyway (https://micronaut-projects.github.io/micronaut-flyway/latest/guide/index.html)
+- Micronaut Security Basic Auth (https://guides.micronaut.io/micronaut-security-basicauth/guide/index.html)
 
-## Feature http-client documentation
+## Clone & build
 
-- [Micronaut HTTP Client documentation](https://docs.micronaut.io/latest/guide/index.html#httpClient)
+- Tests are executed on an h2 database (Work in progress)
+- Simply `mvn clean install` it
 
-## Feature testcontainers documentation
+## Run it
 
-- [https://www.testcontainers.org/](https://www.testcontainers.org/)
+You can run the app with a local postgres database by
 
-## Feature jdbc-hikari documentation
+- running `docker run --name some-postgres -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -d postgres`
+- Launch the `Application.class`
+- Two users are available with Basic Auth :
+    - standardUser (read only)
+    - adminUser (create & read)
 
-- [Micronaut Hikari JDBC Connection Pool documentation](https://micronaut-projects.github.io/micronaut-sql/latest/guide/index.html#jdbc)
+## GraphQl queries
 
-## Feature security documentation
+```graphql
+# Sample Queries available for users : standardUser, adminUser : 
+query readClients {
+    clients{
+        id,
+        name,
+        email,
+        dateOfBirth
+    }
+}
 
-- [Micronaut Security documentation](https://micronaut-projects.github.io/micronaut-security/latest/guide/index.html)
+query readProducts {
+    products{
+        name,
+        price
+    }
+}
 
-## Feature graphql documentation
+query readBookings {
+    bookings{
+        product {
+            name
+        },
+        client {
+            name
+        },
+        bookingDate
+    }
+}
 
-- [Micronaut GraphQL documentation](https://micronaut-projects.github.io/micronaut-graphql/latest/guide/index.html)
+query readBookingsByClient {
+    bookingsByClient (clientId: 1){
+        product {
+            name
+        }
+        bookingDate
+    }
+}
 
-## Feature flyway documentation
+# Sample Mutations available for users : adminUser : 
+mutation createClient {
+    createClient(name: "toto3", email: "my.email@toto.com", dateOfBirth: "1986-01-17 00:12:12.000")
+}
 
-- [Micronaut Flyway Database Migration documentation](https://micronaut-projects.github.io/micronaut-flyway/latest/guide/index.html)
+mutation createProduct {
+    createProduct(name: "produit2", price: 10.45)
+}
 
-- [https://flywaydb.org/](https://flywaydb.org/)
+mutation createBooking {
+    createBooking(productId: 2, clientId: 2)
+}
+```
 
+Same app with other stacks :
+
+- https://github.com/fabienmifsud/quarkus-crud
+- https://github.com/fabienmifsud/spring-boot-crud
