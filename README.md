@@ -1,4 +1,4 @@
-# Spring Boot Crud with Postgres & DGS GraphQL
+# Micronaut Crud with Postgres & GraphQL
 
 This project is aimed to quickly test the stack :
 
